@@ -86,12 +86,29 @@ class _TaskListPageState extends State<TaskListPage> {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true, //para controlar el fodo del modal
-        builder: (_) => _NewTaskModal(
-              onTaskCreated: (Task task) {
-                taskRepository.addTask(task);
-                setState(() {});
-              },
-            ));
+        backgroundColor: Colors.transparent,
+        builder: (contex) {
+          return DraggableScrollableSheet(
+            initialChildSize: 0.65,
+            minChildSize: 0.3,
+            maxChildSize: 0.9,
+            expand: false,
+            builder: (context, scrollController) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: _NewTaskModal(
+                  onTaskCreated: (Task task) {
+                    taskRepository.addTask(task);
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   //funcion para eliminar
